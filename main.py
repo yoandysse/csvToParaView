@@ -1,14 +1,13 @@
 import pandas as pd
 import sys
 import vtk
-import time
+import datetime
 
 def read_csv(filename):
     # Leer los datos desde el nuevo archivo CSV
     data = pd.read_csv(filename, delimiter=",", header=0)
 
     return data
-
 
 def calculate_dimension(data, column):
     # Calcular dimensions
@@ -27,7 +26,6 @@ def calculate_dimension(data, column):
 
 
     return df_dimension.iloc[0]['dimension'], df_dimension.iloc[1]['dimension'],df_dimension.iloc[2]['dimension']
-
 
 def generate_vtk(input_file, output_filename=None, output_type=None):
 
@@ -81,8 +79,6 @@ def generate_vtk(input_file, output_filename=None, output_type=None):
     # endregion Escribir la estructura a un archivo vtk
 
 
-
-
 if __name__ == '__main__':
 
     if len(sys.argv) == 1:
@@ -103,14 +99,14 @@ if __name__ == '__main__':
         else:
             output_type = 'binary'
 
-    start_time = time.time()
-    print("Hora de inicio: {}".format(start_time))
+    start_time = datetime.datetime.now()
+
+    print("Tiempo de inicio: {}".format(start_time.strftime("%H:%M:%S")))
 
     generate_vtk(input_file=input_file, output_filename='output.vtk', output_type=output_type)
 
-    end_time = time.time()
+    end_time = datetime.datetime.now()
 
-    print("Tiempo de ejecución: {} segundos".format(end_time - start_time))
-    print("Hora de finalización: {}".format(end_time))
-
+    print("Tiempo de ejecución: {:.2f} minutos".format((end_time - start_time).total_seconds() / 60))
+    print("Hora de finalización: {}".format(end_time.strftime("%H:%M:%S")))
 
